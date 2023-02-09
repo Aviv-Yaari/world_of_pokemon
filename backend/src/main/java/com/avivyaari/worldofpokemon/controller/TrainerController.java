@@ -4,7 +4,7 @@ package com.avivyaari.worldofpokemon.controller;
 import com.avivyaari.worldofpokemon.dto.TrainerResponse;
 import com.avivyaari.worldofpokemon.entity.Pokemon;
 import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
-import com.avivyaari.worldofpokemon.exception.PokemonAlreadyInBagException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
 import com.avivyaari.worldofpokemon.service.TrainerService;
 import com.avivyaari.worldofpokemon.entity.Trainer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class TrainerController {
     }
     
     @PatchMapping(value = "/{trainerName}/catch/{pokemonName}")
-    public ResponseEntity catchPokemon(@PathVariable String trainerName, @PathVariable String pokemonName) throws CustomEntityNotFoundException, PokemonAlreadyInBagException {
+    public ResponseEntity catchPokemon(@PathVariable String trainerName, @PathVariable String pokemonName) throws CustomEntityNotFoundException, CustomEntityExistsException {
         List<Pokemon> bag = trainerService.catchPokemon(trainerName, pokemonName);
         return ResponseEntity.ok(bag);
     }

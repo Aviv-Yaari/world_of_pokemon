@@ -1,6 +1,6 @@
 package com.avivyaari.worldofpokemon.entity;
 
-import com.avivyaari.worldofpokemon.exception.PokemonAlreadyInBagException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
 import jakarta.persistence.*;
 
 import java.util.LinkedList;
@@ -63,12 +63,12 @@ public class Trainer {
     }
 
     // TODO: Move the bag to a separate class, improve implementation.
-    public void addPokemon(Pokemon pokemon) throws PokemonAlreadyInBagException {
+    public void addPokemon(Pokemon pokemon) throws CustomEntityExistsException {
         if (this.bag == null) {
             this.bag = new LinkedList<>();
         }
         if (this.bag.stream().anyMatch(p -> p.getId().equals(pokemon.getId()))) {
-            throw new PokemonAlreadyInBagException(pokemon.getName() + " already exists in the bag");
+            throw new CustomEntityExistsException(pokemon.getName() + " already exists in the bag");
         }
         if (this.bag.size() == 3) {
             this.bag.remove(2);

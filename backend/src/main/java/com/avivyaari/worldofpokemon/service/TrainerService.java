@@ -3,7 +3,7 @@ package com.avivyaari.worldofpokemon.service;
 import com.avivyaari.worldofpokemon.entity.Pokemon;
 import com.avivyaari.worldofpokemon.entity.Trainer;
 import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
-import com.avivyaari.worldofpokemon.exception.PokemonAlreadyInBagException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
 import com.avivyaari.worldofpokemon.repository.PokemonRepository;
 import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class TrainerService implements ITrainerService {
     }
     
     @Override
-    public List<Pokemon> catchPokemon(String trainerName, String pokemonName) throws CustomEntityNotFoundException, PokemonAlreadyInBagException {
+    public List<Pokemon> catchPokemon(String trainerName, String pokemonName) throws CustomEntityNotFoundException, CustomEntityExistsException {
         Pokemon pokemon = pokemonRepository.findPokemonByNameIs(pokemonName);
         Trainer trainer = trainerRepository.findTrainerByNameIs(trainerName);
         if (pokemon == null) {

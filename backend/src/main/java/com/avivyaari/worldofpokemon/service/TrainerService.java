@@ -1,13 +1,15 @@
 package com.avivyaari.worldofpokemon.service;
 
+import com.avivyaari.worldofpokemon.entity.Pokemon;
 import com.avivyaari.worldofpokemon.entity.Trainer;
+import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
+import com.avivyaari.worldofpokemon.exception.PokemonAlreadyInBagException;
 import com.avivyaari.worldofpokemon.repository.PokemonRepository;
 import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class TrainerService implements ITrainerService {
@@ -21,18 +23,35 @@ public class TrainerService implements ITrainerService {
     }
 
     @Override
-    public List<Trainer> getTrainers() {
-        return trainerRepository.findAll();
+    public List<Trainer> getTrainers() throws CustomEntityNotFoundException {
+        List<Trainer> trainers = trainerRepository.findAll();
+        if (trainers == null) {
+            throw new CustomEntityNotFoundException("Trainers not found");
+        }
+        return trainers;
     }
 
     @Override
-    public Trainer getTrainerById(Long id) {
-        return trainerRepository.findAllById(id);
+    public Trainer getTrainer(Long id) throws CustomEntityNotFoundException {
+        Trainer trainer = trainerRepository.findAllById(id);
+        if (trainer == null) {
+            throw new CustomEntityNotFoundException("Trainer not found");
+        }
+        return trainer;
     }
     
     @Override
-    public List<Trainer> getTrainersForBattle(Set<String> names) {
-        return trainerRepository.findAllByNameIn(names);
+    public List<Pokemon> catchPokemon(String trainerName, String pokemonName) throws CustomEntityNotFoundException, PokemonAlreadyInBagException {
+        Pokemon pokemon = pokemonRepository.findPokemonByNameIs(pokemonName);
+        Trainer trainer = trainerRepository.findTrainerByNameIs(trainerName);
+        if (pokemon == null) {
+            throw new CustomEntityNotFoundException("Pokemon not found");
+        }
+        if (trainer == null) {
+            throw new CustomEntityNotFoundException("Trainer not found");
+        }
+        trainer.addPokemon(pokemon);
+        trainerRepository.save(trainer);
+        return trainer.getBag();
     }
-    
 }

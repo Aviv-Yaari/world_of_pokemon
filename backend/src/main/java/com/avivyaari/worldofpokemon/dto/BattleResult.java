@@ -1,4 +1,4 @@
-package com.avivyaari.worldofpokemon.entity;
+package com.avivyaari.worldofpokemon.dto;
 
 public class BattleResult {
     BattleStatus status;

@@ -1,6 +1,9 @@
 package com.avivyaari.worldofpokemon.service;
 
+import com.avivyaari.worldofpokemon.dto.BattleResult;
+import com.avivyaari.worldofpokemon.dto.BattleStatus;
 import com.avivyaari.worldofpokemon.entity.*;
+import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +12,11 @@ import java.util.Set;
 
 @Service
 public class BattleService implements IBattleService {
-    private TrainerService trainerService;
+    private TrainerRepository trainerRepository;
 
     @Autowired
-    public BattleService(TrainerService trainerService) {
-        this.trainerService = trainerService;
+    public BattleService(TrainerRepository trainerRepository) {
+        this.trainerRepository = trainerRepository;
     }
 
     /** @return if type1 won, will return 1. if type2 won, will return 2. In case of a draw - will return 0. */
@@ -36,9 +39,9 @@ public class BattleService implements IBattleService {
     @Override
     public BattleResult doBattle(String trainer1Name, String trainer2Name) {
         try {
-            List<Trainer> trainers = trainerService.getTrainersForBattle(Set.of(trainer1Name, trainer2Name));
+            List<Trainer> trainers = trainerRepository.findTrainersByNameIn(Set.of(trainer1Name, trainer2Name));
             if (trainers.get(0).getBag().size() < 3 || trainers.get(1).getBag().size() < 3) {
-                return new BattleResult(BattleStatus.Error, "Cancelled - both trainers must have at least 3 pokemons in the bag");
+                return new BattleResult(BattleStatus.Error, "Cancelled - both trainers must have at least 3 pokemon in the bag");
             }
             int trainer1Wins = 0;
             int trainer2Wins = 0;
@@ -55,10 +58,10 @@ public class BattleService implements IBattleService {
                 }
             }
             if (trainer1Wins > trainer2Wins) {
-                message = "Trainer 1 wins";
+                message = trainer1Name + " wins";
             }
             else if (trainer2Wins > trainer1Wins){
-                message = "Trainer 2 wins";
+                message = trainer2Name + " wins";
             }
             return new BattleResult(trainer1Wins == trainer2Wins ? BattleStatus.Draw : BattleStatus.Success, message);
         } catch (Exception e) {

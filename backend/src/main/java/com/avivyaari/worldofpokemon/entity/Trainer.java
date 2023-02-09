@@ -1,22 +1,20 @@
 package com.avivyaari.worldofpokemon.entity;
 
+import com.avivyaari.worldofpokemon.exception.PokemonAlreadyInBagException;
 import jakarta.persistence.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@Table(name = "trainer")
 public class Trainer {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(unique = true)
     private String name;
 
-    @Column(name = "level")
     int level;
     @ManyToMany
     @JoinTable(name = "trainer_pokemon", joinColumns = @JoinColumn(name = "trainer_id"), inverseJoinColumns = @JoinColumn(name = "pokemon_id"))
@@ -64,10 +62,17 @@ public class Trainer {
         this.bag = bag;
     }
 
-    public void addPokemon(Pokemon pokemon) {
+    // TODO: Move the bag to a separate class, improve implementation.
+    public void addPokemon(Pokemon pokemon) throws PokemonAlreadyInBagException {
         if (this.bag == null) {
             this.bag = new LinkedList<>();
         }
-        this.bag.add(pokemon);
+        if (this.bag.stream().anyMatch(p -> p.getId().equals(pokemon.getId()))) {
+            throw new PokemonAlreadyInBagException(pokemon.getName() + " already exists in the bag");
+        }
+        if (this.bag.size() == 3) {
+            this.bag.remove(2);
+        }
+        this.bag.add(0, pokemon);
     }
 }

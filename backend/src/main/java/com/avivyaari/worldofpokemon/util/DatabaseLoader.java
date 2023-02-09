@@ -9,6 +9,7 @@ import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -25,14 +26,25 @@ public class DatabaseLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Pokemon pikachu = new Pokemon("Pikachu", PokemonType.Fire);
-        Pokemon charizard = new Pokemon("Charizard", PokemonType.Fire);
         Pokemon squirtle = new Pokemon("Squirtle", PokemonType.Grass);
-        
-        Trainer trainer = new Trainer("Aviv", 24, List.of(pikachu, charizard));
+        Pokemon mew = new Pokemon("Mew", PokemonType.Fire);
+                
+        Pokemon charizard = new Pokemon("Charizard", PokemonType.Fire);
+        Pokemon snorlax = new Pokemon("Snorlax", PokemonType.Grass);
+        Pokemon ditto = new Pokemon("Ditto", PokemonType.Water);
+
+        LinkedList<Pokemon> pokemons = new LinkedList<>();
+        pokemons.add(charizard);
+        Trainer trainer = new Trainer("Aviv", 24, List.of(charizard, snorlax, ditto));
+        Trainer trainer2 = new Trainer("Ash", 78, List.of(pikachu, squirtle, mew));
         pokemonRepository.save(pikachu);
-        pokemonRepository.save(charizard);
         pokemonRepository.save(squirtle);
+        pokemonRepository.save(mew);
+        pokemonRepository.save(charizard);
+        pokemonRepository.save(snorlax);
+        pokemonRepository.save(ditto);
         trainerRepository.save(trainer);
+        trainerRepository.save(trainer2);
         
     }
 }

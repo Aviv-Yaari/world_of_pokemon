@@ -1,6 +1,6 @@
 package com.avivyaari.worldofpokemon.service;
 
-import com.avivyaari.worldofpokemon.entity.BattleResult;
+import com.avivyaari.worldofpokemon.dto.BattleResult;
 import com.avivyaari.worldofpokemon.entity.PokemonType;
 
 public interface IBattleService {

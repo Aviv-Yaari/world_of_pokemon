@@ -1,14 +1,17 @@
 package com.avivyaari.worldofpokemon.controller;
 
 
+import com.avivyaari.worldofpokemon.dto.TrainerResponse;
+import com.avivyaari.worldofpokemon.entity.Pokemon;
+import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
+import com.avivyaari.worldofpokemon.exception.PokemonAlreadyInBagException;
 import com.avivyaari.worldofpokemon.service.TrainerService;
 import com.avivyaari.worldofpokemon.entity.Trainer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,14 +26,23 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
-    @GetMapping("/list")
-    public List<Trainer> getTrainers() {
-        return trainerService.getTrainers();
+    @GetMapping("")
+    public List<TrainerResponse> getTrainers() throws CustomEntityNotFoundException {
+        List<Trainer> trainers = trainerService.getTrainers();
+        List<TrainerResponse> responses = new ArrayList<>();
+        trainers.forEach(trainer -> responses.add(new TrainerResponse(trainer.getName(), trainer.getLevel(), trainer.getBag())));
+        return responses;
     }
     
     @GetMapping("/{id}")
-    public Trainer getTrainers(@PathVariable Long id) {
-        return trainerService.getTrainerById(id);
+    public TrainerResponse getTrainer(@PathVariable Long id) throws CustomEntityNotFoundException {
+        Trainer trainer = trainerService.getTrainer(id);
+        return new TrainerResponse(trainer.getName(), trainer.getLevel(), trainer.getBag());
     }
     
+    @PatchMapping(value = "/{trainerName}/catch/{pokemonName}")
+    public ResponseEntity catchPokemon(@PathVariable String trainerName, @PathVariable String pokemonName) throws CustomEntityNotFoundException, PokemonAlreadyInBagException {
+        List<Pokemon> bag = trainerService.catchPokemon(trainerName, pokemonName);
+        return ResponseEntity.ok(bag);
+    }
 }

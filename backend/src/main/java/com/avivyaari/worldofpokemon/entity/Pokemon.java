@@ -7,14 +7,11 @@ import jakarta.persistence.*;
  * There are currently more than 700 creatures that inhabit the Pokémon universe.
  */
 @Entity
-@Table(name ="pokemon")
 public class Pokemon {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
     @Enumerated(EnumType.STRING)
     @Column(name = "type")

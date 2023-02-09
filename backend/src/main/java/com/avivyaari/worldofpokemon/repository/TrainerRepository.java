@@ -9,5 +9,7 @@ import java.util.Set;
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     Trainer findAllById(Long id);
     
-    List<Trainer> findAllByNameIn(Set<String> names);
+    Trainer findTrainerByNameIs(String name);
+    
+    List<Trainer> findTrainersByNameIn(Set<String> names);
 }

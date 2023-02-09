@@ -1,10 +1,11 @@
 package com.avivyaari.worldofpokemon.service;
 
-import com.avivyaari.worldofpokemon.dto.BattleResult;
 import com.avivyaari.worldofpokemon.dto.BattleStatus;
 import com.avivyaari.worldofpokemon.entity.*;
+import com.avivyaari.worldofpokemon.exception.BattleException;
 import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,35 +38,34 @@ public class BattleService implements IBattleService {
     }
     
     @Override
-    public BattleResult doBattle(String trainer1Name, String trainer2Name) {
-        try {
-            List<Trainer> trainers = trainerRepository.findTrainersByNameIn(Set.of(trainer1Name, trainer2Name));
-            if (trainers.get(0).getBag().size() < 3 || trainers.get(1).getBag().size() < 3) {
-                return new BattleResult(BattleStatus.Error, "Cancelled - both trainers must have at least 3 pokemon in the bag");
-            }
-            int trainer1Wins = 0;
-            int trainer2Wins = 0;
-            String message = "draw";
-            for (int round = 0; round < 3; round++) {
-                Pokemon trainer1sPokemon = trainers.get(0).getBag().get(round);
-                Pokemon trainer2sPokemon = trainers.get(1).getBag().get(round);
-                int winner = getTypeWinner(trainer1sPokemon.getType(), trainer2sPokemon.getType());
-                if (winner == 1) {
-                    trainer1Wins++;
-                }
-                else if (winner == 2) {
-                    trainer2Wins++;
-                }
-            }
-            if (trainer1Wins > trainer2Wins) {
-                message = trainer1Name + " wins";
-            }
-            else if (trainer2Wins > trainer1Wins){
-                message = trainer2Name + " wins";
-            }
-            return new BattleResult(trainer1Wins == trainer2Wins ? BattleStatus.Draw : BattleStatus.Success, message);
-        } catch (Exception e) {
-            return new BattleResult(BattleStatus.Error, "An unexpected error occurred");
+    public BattleStatus doBattle(String trainer1Name, String trainer2Name) throws BattleException {
+        if (trainer1Name.equals(trainer2Name)) {
+            throw new BattleException("A trainer can't fight himself/herself!", HttpStatus.BAD_REQUEST);
         }
+        List<Trainer> trainers = trainerRepository.findTrainersByNameIn(Set.of(trainer1Name, trainer2Name));
+        if (trainers.get(0).getBag().size() < 3 || trainers.get(1).getBag().size() < 3) {
+            throw new BattleException("Cancelled - both trainers must have at least 3 pokemon in the bag", HttpStatus.BAD_REQUEST);
+        }
+        int trainer1Wins = 0;
+        int trainer2Wins = 0;
+        String message = "draw";
+        for (int round = 0; round < 3; round++) {
+            Pokemon trainer1sPokemon = trainers.get(0).getBag().get(round);
+            Pokemon trainer2sPokemon = trainers.get(1).getBag().get(round);
+            int winner = getTypeWinner(trainer1sPokemon.getType(), trainer2sPokemon.getType());
+            if (winner == 1) {
+                trainer1Wins++;
+            }
+            else if (winner == 2) {
+                trainer2Wins++;
+            }
+        }
+        if (trainer1Wins > trainer2Wins) {
+            return BattleStatus.Trainer1Won;
+        }
+        else if (trainer2Wins > trainer1Wins){
+            return BattleStatus.Trainer2Won;
+        }
+        return BattleStatus.Draw;
     }
 }

@@ -1,7 +1,7 @@
 package com.avivyaari.worldofpokemon.dto;
 
 public enum BattleStatus {
-    Success,
-    Draw,
-    Error
+    Trainer1Won,
+    Trainer2Won,
+    Draw
 }

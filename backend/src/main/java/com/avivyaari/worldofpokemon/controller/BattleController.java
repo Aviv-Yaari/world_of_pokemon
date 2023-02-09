@@ -1,6 +1,7 @@
 package com.avivyaari.worldofpokemon.controller;
 
-import com.avivyaari.worldofpokemon.dto.BattleResult;
+import com.avivyaari.worldofpokemon.dto.BattleStatus;
+import com.avivyaari.worldofpokemon.exception.BattleException;
 import com.avivyaari.worldofpokemon.service.BattleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,12 @@ public class BattleController {
 
 
     @GetMapping("/{trainer1Name}/{trainer2Name}")
-    public BattleResult doBattle(@PathVariable String trainer1Name, @PathVariable String trainer2Name) {
-        return battleService.doBattle(trainer1Name, trainer2Name);
+    public String doBattle(@PathVariable String trainer1Name, @PathVariable String trainer2Name) throws BattleException {
+        BattleStatus battleStatus = battleService.doBattle(trainer1Name, trainer2Name);
+        if (battleStatus == BattleStatus.Draw) {
+            return "Draw";
+        }
+        String winner = battleStatus == BattleStatus.Trainer1Won ? trainer1Name : trainer2Name;
+        return winner + " won";
     }
 }

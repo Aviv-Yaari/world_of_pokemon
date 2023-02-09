@@ -1,10 +1,10 @@
 package com.avivyaari.worldofpokemon.exception;
 
-import jakarta.persistence.EntityExistsException;
+import org.springframework.http.HttpStatus;
 
-public class CustomEntityExistsException extends EntityExistsException {
+public class CustomEntityExistsException extends ExternalException {
     
     public CustomEntityExistsException(String message) {
-        super(message);
+        super(message, HttpStatus.CONFLICT);
     }
 }

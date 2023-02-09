@@ -1,7 +1,6 @@
 package com.avivyaari.worldofpokemon.service;
 
 import com.avivyaari.worldofpokemon.entity.*;
-import com.example.worldofpokemon.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

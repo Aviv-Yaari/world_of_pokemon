@@ -1,10 +1,9 @@
 package com.avivyaari.worldofpokemon.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import jakarta.persistence.EntityNotFoundException;
 
-public class CustomEntityNotFoundException extends CustomException {
+public class CustomEntityNotFoundException extends EntityNotFoundException {
     public CustomEntityNotFoundException(String message) {
-        super(message, HttpStatus.NOT_FOUND);
+        super(message);
     }
 }

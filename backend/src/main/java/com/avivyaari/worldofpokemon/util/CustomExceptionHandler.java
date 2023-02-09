@@ -1,7 +1,8 @@
 package com.avivyaari.worldofpokemon.util;
 
 import com.avivyaari.worldofpokemon.dto.ErrorResponse;
-import com.avivyaari.worldofpokemon.exception.CustomException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,8 +11,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomExceptionHandler {
     
     @ExceptionHandler
-    public ErrorResponse handleCustomException(CustomException e) {
-        return new ErrorResponse(e.getMessage(), e.getStatus());
+    public ErrorResponse handleEntityNotFound(CustomEntityNotFoundException e) {
+        return new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler
+    public ErrorResponse handleEntityExists(CustomEntityExistsException e) {
+        return new ErrorResponse(e.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler

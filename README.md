@@ -12,18 +12,18 @@ The following REST API endpoints are available in the project:
 ### Entities
 The project features the following entities:
 - **Pokemon**:
- - id: Long.
- - name: String.
- - type: Grass/Wind/Fire.
+  - id: Long.
+  - name: String.
+  - type: Grass/Wind/Fire.
 - **Trainer**
- - id: Long.
- - name: String.
- - level: int.
+  - id: Long.
+  - name: String.
+  - level: int.
 - **Battle**
- - trainer1_id: trainer id.
- - trainer2_id: trainer id.
- - winner: trainer id.
- - date: timestamp.
+  - trainer1_id: trainer id.
+  - trainer2_id: trainer id.
+  - winner: trainer id.
+  - date: timestamp.
 
 Relationships:
 - Trainer ~ Pokemon: Many to many, each trainer can own multiple Pokemon, each Pokemon can be owned by multiple trainers.

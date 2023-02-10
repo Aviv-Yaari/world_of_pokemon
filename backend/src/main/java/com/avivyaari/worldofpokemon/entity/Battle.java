@@ -14,11 +14,14 @@ public class Battle {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Trainer trainer1;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Trainer trainer2;
+
     @ManyToOne
     private Trainer winner;
+    
     @CreationTimestamp
     @Column(nullable = false)
     private Date date;

@@ -17,7 +17,8 @@ public class Trainer {
     @Column(unique = true, nullable = false)
     private String name;
 
-    int level;
+    private int level;
+    
     @ManyToMany
     @JoinTable(name = "trainer_pokemon", joinColumns = @JoinColumn(name = "trainer_id"), inverseJoinColumns = @JoinColumn(name = "pokemon_id"))
     List<Pokemon> bag;

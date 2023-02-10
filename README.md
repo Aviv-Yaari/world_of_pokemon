@@ -25,7 +25,7 @@ The project features the following entities:
   - trainer1_id: trainer id.
   - trainer2_id: trainer id.
   - winner: trainer id.
-  - date: timestamp.
+  - date: Timestamp.
 
 Relationships:
 - Trainer ~ Pokemon: Many to many, each trainer can own multiple Pokemon, each Pokemon can be owned by multiple trainers.

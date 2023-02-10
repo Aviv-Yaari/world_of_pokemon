@@ -1,4 +1,5 @@
-https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png
+![Pokemon Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png)
+
 # World of Pokemon
 This project showcases the use of Java Spring Boot and Hibernate JPA, with a particular emphasis on addressing a unique challenge: the lack of a plural form for the word "Pokemon".
 

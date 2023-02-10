@@ -1,7 +1,7 @@
 ![Pokemon Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png)
 
 # World of Pokemon
-This project showcases the use of Java Spring Boot and Hibernate JPA, and a MySQL database. It showcases how these technologies can be used to address a specific challenge, which is the lack of a plural form for the word "Pokemon" 😂  
+This project demonstrates the use of Java Spring Boot Hibernate JPA, and a MySQL database. It showcases how these technologies can be used to address a specific challenge, which is the lack of a plural form for the word "Pokemon" 😂  
 This might turn in the future into a monorepo with a frontend implementation as well.
 ___
 

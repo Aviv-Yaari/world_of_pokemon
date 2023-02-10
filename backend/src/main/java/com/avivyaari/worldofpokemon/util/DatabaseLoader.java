@@ -24,11 +24,11 @@ public class DatabaseLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Pokemon pikachu = new Pokemon("Pikachu", PokemonType.Fire);
         Pokemon squirtle = new Pokemon("Squirtle", PokemonType.Grass);
         Pokemon mew = new Pokemon("Mew", PokemonType.Fire);
-                
+
         Pokemon charizard = new Pokemon("Charizard", PokemonType.Fire);
         Pokemon snorlax = new Pokemon("Snorlax", PokemonType.Grass);
         Pokemon ditto = new Pokemon("Ditto", PokemonType.Water);
@@ -37,6 +37,7 @@ public class DatabaseLoader implements CommandLineRunner {
         pokemons.add(charizard);
         Trainer trainer = new Trainer("Aviv", 24, List.of(charizard, snorlax, ditto));
         Trainer trainer2 = new Trainer("Ash", 78, List.of(pikachu, squirtle, mew));
+        Trainer trainer3 = new Trainer("Someone", 11, List.of(pikachu, snorlax, ditto));
         pokemonRepository.save(pikachu);
         pokemonRepository.save(squirtle);
         pokemonRepository.save(mew);
@@ -45,6 +46,7 @@ public class DatabaseLoader implements CommandLineRunner {
         pokemonRepository.save(ditto);
         trainerRepository.save(trainer);
         trainerRepository.save(trainer2);
+        trainerRepository.save(trainer3);
         
     }
 }

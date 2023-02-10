@@ -1,21 +1,31 @@
 package com.avivyaari.worldofpokemon.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
-/**
- * Pokémon are creatures of all shapes and sizes who live in the wild or alongside humans.
- * For the most part, Pokémon do not speak except to utter their names.
- * There are currently more than 700 creatures that inhabit the Pokémon universe.
- */
+import java.util.List;
+
 @Entity
 public class Pokemon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
     private PokemonType type;
+
+    @ManyToMany(mappedBy = "bag")
+    @JsonIgnore
+    private List<Trainer> owners;
+
+    @JsonProperty("owners")
+    public int getOwnerCount() {
+        return owners.size();
+    }
 
     public Pokemon() {
     }
@@ -48,5 +58,6 @@ public class Pokemon {
     public void setType(PokemonType type) {
         this.type = type;
     }
+
 }
 

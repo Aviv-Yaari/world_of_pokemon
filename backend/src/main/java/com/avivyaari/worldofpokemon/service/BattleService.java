@@ -1,7 +1,11 @@
 package com.avivyaari.worldofpokemon.service;
 
-import com.avivyaari.worldofpokemon.entity.*;
+import com.avivyaari.worldofpokemon.entity.Battle;
+import com.avivyaari.worldofpokemon.entity.Pokemon;
+import com.avivyaari.worldofpokemon.entity.PokemonType;
+import com.avivyaari.worldofpokemon.entity.Trainer;
 import com.avivyaari.worldofpokemon.exception.BattleException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
 import com.avivyaari.worldofpokemon.repository.BattleRepository;
 import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +42,16 @@ public class BattleService implements IBattleService {
         }
         return 2;
     }
-    
+
     @Override
-    public Trainer doBattle(String trainer1Name, String trainer2Name) throws BattleException {
+    public Trainer doBattle(String trainer1Name, String trainer2Name) throws BattleException, CustomEntityNotFoundException {
         if (trainer1Name.equals(trainer2Name)) {
             throw new BattleException("A trainer can't fight himself/herself!", HttpStatus.BAD_REQUEST);
         }
         List<Trainer> trainers = trainerRepository.findTrainersByNameIn(Set.of(trainer1Name, trainer2Name));
+        if (trainers.isEmpty()) {
+            throw new CustomEntityNotFoundException("Trainers not found");
+        }
         Trainer trainer1 = trainers.get(0);
         Trainer trainer2 = trainers.get(1);
         Battle battle = new Battle(trainer1, trainer2, null);
@@ -53,24 +60,21 @@ public class BattleService implements IBattleService {
         }
         int trainer1Wins = 0;
         int trainer2Wins = 0;
-        Trainer winner = null;
         for (int round = 0; round < 3; round++) {
             Pokemon trainer1sPokemon = battle.getTrainer1().getBag().get(round);
             Pokemon trainer2sPokemon = battle.getTrainer2().getBag().get(round);
             int roundWinner = getRoundWinner(trainer1sPokemon.getType(), trainer2sPokemon.getType());
             if (roundWinner == 1) {
                 trainer1Wins++;
-            }
-            else if (roundWinner == 2) {
+            } else if (roundWinner == 2) {
                 trainer2Wins++;
             }
         }
-        
-        if (trainer1Wins > trainer2Wins) {
-            winner = trainer1;
-        }
-        else if (trainer2Wins > trainer1Wins){
-            winner = trainer2;
+
+        Trainer winner = null;
+        if (trainer1Wins != trainer2Wins) {
+            winner = trainer1Wins > trainer2Wins ? trainer1 : trainer2;
+            winner.setLevel(winner.getLevel() + 1);
         }
         battle.setWinner(winner);
         battleRepository.save(battle);

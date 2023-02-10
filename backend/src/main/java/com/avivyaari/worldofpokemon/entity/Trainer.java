@@ -1,6 +1,7 @@
 package com.avivyaari.worldofpokemon.entity;
 
 import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.LinkedList;
@@ -10,9 +11,10 @@ import java.util.List;
 public class Trainer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     int level;

@@ -10,12 +10,14 @@ public class Battle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @OneToOne
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Trainer trainer1;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private Trainer trainer2;
-    @OneToOne
+    @ManyToOne
     private Trainer winner;
     @CreationTimestamp
     @Column(nullable = false)

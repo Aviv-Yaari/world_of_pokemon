@@ -17,13 +17,20 @@ public class PokemonService implements IPokemonService {
     public PokemonService(PokemonRepository pokemonRepository) {
         this.pokemonRepository = pokemonRepository;
     }
-    
+
     @Override
     public List<Pokemon> getAllPokemon() throws CustomEntityNotFoundException {
         List<Pokemon> pokemon = pokemonRepository.findAll();
-        if (pokemon == null) {
+        if (pokemon.isEmpty()) {
             throw new CustomEntityNotFoundException("Pokemon not found");
         }
+        return pokemon;
+    }
+
+    @Override
+    public Pokemon getPokemon(String name) throws CustomEntityNotFoundException {
+        Pokemon pokemon = pokemonRepository.findPokemonByNameIs(name)
+                .orElseThrow(() -> new CustomEntityNotFoundException("Pokemon not found"));
         return pokemon;
     }
 }

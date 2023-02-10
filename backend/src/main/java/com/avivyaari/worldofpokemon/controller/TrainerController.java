@@ -1,14 +1,13 @@
 package com.avivyaari.worldofpokemon.controller;
 
 
-import com.avivyaari.worldofpokemon.dto.TrainerResponse;
+import com.avivyaari.worldofpokemon.dto.BagResponse;
 import com.avivyaari.worldofpokemon.entity.Pokemon;
-import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
-import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
-import com.avivyaari.worldofpokemon.service.TrainerService;
 import com.avivyaari.worldofpokemon.entity.Trainer;
+import com.avivyaari.worldofpokemon.exception.CustomEntityExistsException;
+import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
+import com.avivyaari.worldofpokemon.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,23 +25,23 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
-    @GetMapping("")
-    public List<TrainerResponse> getTrainers() throws CustomEntityNotFoundException {
+    @GetMapping("/list")
+    public List<Trainer> getTrainers() throws CustomEntityNotFoundException {
         List<Trainer> trainers = trainerService.getTrainers();
-        List<TrainerResponse> responses = new ArrayList<>();
-        trainers.forEach(trainer -> responses.add(new TrainerResponse(trainer.getName(), trainer.getLevel(), trainer.getBag())));
+        List<Trainer> responses = new ArrayList<>();
+        trainers.forEach(trainer -> responses.add(new Trainer(trainer.getName(), trainer.getLevel(), trainer.getBag())));
         return responses;
     }
-    
-    @GetMapping("/{id}")
-    public TrainerResponse getTrainer(@PathVariable Long id) throws CustomEntityNotFoundException {
-        Trainer trainer = trainerService.getTrainer(id);
-        return new TrainerResponse(trainer.getName(), trainer.getLevel(), trainer.getBag());
+
+    @GetMapping("/{name}")
+    public Trainer getTrainer(@PathVariable String name) throws CustomEntityNotFoundException {
+        Trainer trainer = trainerService.getTrainer(name);
+        return new Trainer(trainer.getName(), trainer.getLevel(), trainer.getBag());
     }
-    
-    @PatchMapping(value = "/{trainerName}/catch/{pokemonName}")
-    public ResponseEntity catchPokemon(@PathVariable String trainerName, @PathVariable String pokemonName) throws CustomEntityNotFoundException, CustomEntityExistsException {
+
+    @PatchMapping(value = "/{trainerName}/pokemon/{pokemonName}")
+    public BagResponse catchPokemon(@PathVariable String trainerName, @PathVariable String pokemonName) throws CustomEntityNotFoundException, CustomEntityExistsException {
         List<Pokemon> bag = trainerService.catchPokemon(trainerName, pokemonName);
-        return ResponseEntity.ok(bag);
+        return new BagResponse(bag);
     }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IPokemonService {
     List<Pokemon> getAllPokemon() throws CustomEntityNotFoundException;
+
+    Pokemon getPokemon(String name) throws CustomEntityNotFoundException;
 }

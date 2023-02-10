@@ -2,6 +2,8 @@
 
 # World of Pokemon
 This project showcases the use of Java Spring Boot and Hibernate JPA, with a particular emphasis on addressing a unique challenge: the lack of a plural form for the word "Pokemon".
+This might turn in the future into a monorepo with a frontend implementation as well.
+___
 
 ### Endpoints
 The following REST API endpoints are available in the project:

@@ -62,7 +62,6 @@ public class Trainer {
         this.bag = bag;
     }
 
-    // TODO: Move the bag to a separate class, improve implementation.
     public void addPokemon(Pokemon pokemon) throws CustomEntityExistsException {
         if (this.bag == null) {
             this.bag = new LinkedList<>();

@@ -17,8 +17,8 @@ import java.util.Set;
 
 @Service
 public class BattleService implements IBattleService {
-    private TrainerRepository trainerRepository;
-    private BattleRepository battleRepository;
+    private final TrainerRepository trainerRepository;
+    private final BattleRepository battleRepository;
 
     @Autowired
     public BattleService(TrainerRepository trainerRepository, BattleRepository battleRepository) {
@@ -26,7 +26,9 @@ public class BattleService implements IBattleService {
         this.battleRepository = battleRepository;
     }
 
-    /** @return if type1 won, will return 1. if type2 won, will return 2. In case of a draw - will return 0. */
+    /**
+     * @return if type1 won, will return 1. if type2 won, will return 2. In case of a draw - will return 0.
+     */
     public int getRoundWinner(PokemonType type1, PokemonType type2) {
         if (type1.equals(PokemonType.Water) && type2.equals(PokemonType.Fire)) {
             return 1;
@@ -49,7 +51,7 @@ public class BattleService implements IBattleService {
             throw new BattleException("A trainer can't fight himself/herself!", HttpStatus.BAD_REQUEST);
         }
         List<Trainer> trainers = trainerRepository.findTrainersByNameIn(Set.of(trainer1Name, trainer2Name));
-        if (trainers.isEmpty()) {
+        if (trainers.isEmpty() || trainers.size() < 2) {
             throw new CustomEntityNotFoundException("Trainers not found");
         }
         Trainer trainer1 = trainers.get(0);

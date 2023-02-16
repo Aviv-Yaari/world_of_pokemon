@@ -22,6 +22,7 @@ public class BattleServiceTest {
 
     @Autowired
     TrainerRepository trainerRepository;
+
     @Autowired
     BattleService battleService;
 

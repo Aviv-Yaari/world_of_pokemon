@@ -27,7 +27,7 @@ public class TrainerController {
 
     @GetMapping("/list")
     public List<Trainer> getTrainers() throws CustomEntityNotFoundException {
-        List<Trainer> trainers = trainerService.getTrainers();
+        List<Trainer> trainers = trainerService.getAllTrainers();
         List<Trainer> responses = new ArrayList<>();
         trainers.forEach(trainer -> responses.add(new Trainer(trainer.getName(), trainer.getLevel(), trainer.getBag())));
         return responses;

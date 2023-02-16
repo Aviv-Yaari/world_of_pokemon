@@ -9,7 +9,7 @@ import com.avivyaari.worldofpokemon.exception.CustomEntityNotFoundException;
 import java.util.List;
 
 public interface ITrainerService {
-    List<Trainer> getTrainers() throws CustomEntityNotFoundException;
+    List<Trainer> getAllTrainers() throws CustomEntityNotFoundException;
 
     Trainer getTrainer(String name) throws CustomEntityNotFoundException;
 

@@ -22,7 +22,7 @@ public class TrainerService implements ITrainerService {
     }
 
     @Override
-    public List<Trainer> getTrainers() throws CustomEntityNotFoundException {
+    public List<Trainer> getAllTrainers() throws CustomEntityNotFoundException {
         List<Trainer> trainers = trainerRepository.findAll();
         if (trainers.isEmpty()) {
             throw new CustomEntityNotFoundException("No trainers found");

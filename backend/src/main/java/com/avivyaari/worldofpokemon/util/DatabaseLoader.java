@@ -9,7 +9,6 @@ import com.avivyaari.worldofpokemon.repository.TrainerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -33,20 +32,11 @@ public class DatabaseLoader implements CommandLineRunner {
         Pokemon snorlax = new Pokemon("Snorlax", PokemonType.Grass);
         Pokemon ditto = new Pokemon("Ditto", PokemonType.Water);
 
-        LinkedList<Pokemon> pokemons = new LinkedList<>();
-        pokemons.add(charizard);
-        Trainer trainer = new Trainer("Aviv", 24, List.of(charizard, snorlax, ditto));
+        Trainer trainer1 = new Trainer("Aviv", 24, List.of(charizard, snorlax, ditto));
         Trainer trainer2 = new Trainer("Ash", 78, List.of(pikachu, squirtle, mew));
         Trainer trainer3 = new Trainer("Someone", 11, List.of(pikachu, snorlax, ditto));
-        pokemonRepository.save(pikachu);
-        pokemonRepository.save(squirtle);
-        pokemonRepository.save(mew);
-        pokemonRepository.save(charizard);
-        pokemonRepository.save(snorlax);
-        pokemonRepository.save(ditto);
-        trainerRepository.save(trainer);
-        trainerRepository.save(trainer2);
-        trainerRepository.save(trainer3);
-        
+        pokemonRepository.saveAll(List.of(pikachu, squirtle, mew, charizard, snorlax, ditto));
+        trainerRepository.saveAll(List.of(trainer1, trainer2, trainer3));
+
     }
 }
